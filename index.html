@@ -6,91 +6,44 @@
     <title>StockFlow | Controle de Recebimento</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, sans-serif; background-color: #d1d5db; color: #1e293b; font-size: 13px; }
-        .winthor-header { background: linear-gradient(to bottom, #1e3a8a, #172554); border-bottom: 2px solid #fbbf24; }
-        .winthor-card { background: white; border: 1px solid #94a3b8; border-radius: 0px; box-shadow: 1px 1px 0px rgba(0,0,0,0.1); }
-        .winthor-table-header { background-color: #334155; color: white; font-weight: bold; text-transform: uppercase; font-size: 11px; padding: 6px 10px; }
-        .btn-winthor { background: #f8fafc; border: 1px solid #475569; padding: 4px 12px; font-weight: bold; text-transform: uppercase; font-size: 11px; cursor: pointer; }
-        .btn-primary-win { background: #1e3a8a; color: white; border: 1px solid #172554; }
-        .tab-active { background-color: rgba(255, 255, 255, 0.2); border-bottom: 3px solid #fbbf24; }
-        .hidden { display: none !important; }
-        input, select { border: 1px solid #94a3b8 !important; padding: 4px 8px !important; }
-
-        /* ── MODAL USUÁRIOS ── */
-        #modal-usuarios { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 600; align-items: center; justify-content: center; padding: 16px; }
-        #modal-usuarios.open { display: flex; }
-        .mu-box { background: white; width: 100%; max-width: 440px; border: 1px solid #94a3b8; overflow: hidden; }
-        .mu-header { background: linear-gradient(to bottom, #1e3a8a, #172554); color: white; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #fbbf24; }
-        .mu-header span { font-weight: bold; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
-        .mu-close { background: none; border: none; color: white; font-size: 18px; cursor: pointer; line-height: 1; opacity: 0.8; }
-        .mu-close:hover { opacity: 1; }
-        .mu-body { padding: 20px; }
-        .mu-tabs { display: flex; border-bottom: 1px solid #e2e8f0; margin-bottom: 16px; }
-        .mu-tab { flex: 1; padding: 8px; font-size: 11px; font-weight: bold; text-transform: uppercase; background: none; border: none; cursor: pointer; color: #64748b; border-bottom: 2px solid transparent; margin-bottom: -1px; }
-        .mu-tab.active { color: #1e3a8a; border-bottom-color: #fbbf24; }
-        .mu-label { display: block; font-size: 10px; font-weight: bold; text-transform: uppercase; color: #64748b; margin-bottom: 4px; margin-top: 12px; }
-        .mu-input { width: 100%; border: 1px solid #94a3b8 !important; padding: 6px 10px !important; font-size: 12px; background: white; color: #1e293b; border-radius: 0; }
-        .mu-input:focus { outline: none; border-color: #1e3a8a !important; }
-        .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
-        .role-opt { border: 1px solid #e2e8f0; padding: 10px; cursor: pointer; text-align: center; transition: all 0.15s; }
-        .role-opt:hover { border-color: #94a3b8; background: #f8fafc; }
-        .role-opt.selected { border-color: #1e3a8a; background: #eff6ff; }
-        .role-opt i { font-size: 20px; display: block; margin-bottom: 4px; color: #475569; }
-        .role-opt.selected i { color: #1e3a8a; }
-        .role-opt .rl { font-size: 10px; font-weight: bold; text-transform: uppercase; color: #475569; }
-        .role-opt.selected .rl { color: #1e3a8a; }
-        .mu-alert { padding: 8px 12px; font-size: 11px; font-weight: bold; text-transform: uppercase; margin-bottom: 12px; display: none; }
-        .mu-alert.success { background: #d1fae5; color: #065f46; border-left: 3px solid #10b981; }
-        .mu-alert.error   { background: #fee2e2; color: #991b1b; border-left: 3px solid #ef4444; }
-        .user-item { display: flex; align-items: center; padding: 8px 10px; border: 1px solid #e2e8f0; margin-bottom: 6px; background: #f8fafc; }
-        .user-avatar { width: 30px; height: 30px; border-radius: 50%; background: #dbeafe; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #1e3a8a; margin-right: 10px; flex-shrink: 0; }
-        .user-info { flex: 1; }
-        .user-email { font-size: 11px; font-weight: bold; color: #1e293b; word-break: break-all; }
-        .role-badge { display: inline-block; font-size: 9px; font-weight: bold; text-transform: uppercase; padding: 2px 6px; margin-top: 2px; }
-        .badge-admin { background: #fef3c7; color: #92400e; }
-        .badge-user  { background: #e0f2fe; color: #0c4a6e; }
-        .btn-del { background: none; border: 1px solid #fca5a5; color: #dc2626; padding: 3px 8px; font-size: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase; flex-shrink: 0; }
-        .btn-del:hover { background: #fef2f2; }
-        .btn-del:disabled { opacity: 0.4; cursor: default; border-color: #e2e8f0; color: #94a3b8; }
-        .btn-header-icon { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; }
-        .btn-header-icon:hover { background: rgba(255,255,255,0.2); }
-        #list-usuarios-empty { font-size: 11px; color: #94a3b8; text-align: center; padding: 20px; text-transform: uppercase; }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
+    <!-- ══ HEADER ══════════════════════════════════════════ -->
     <header class="winthor-header text-white p-3 flex justify-between items-center sticky top-0 z-50">
         <div class="flex items-center gap-4">
-            <span class="font-black tracking-tighter text-lg italic">STOCKFLOW <span class="font-light text-xs opacity-70 not-italic">| PRO</span></span>
+            <span class="font-black tracking-tighter text-lg italic">
+                STOCKFLOW <span class="font-light text-xs opacity-70 not-italic">| PRO</span>
+            </span>
             <div id="nav-abas" class="hidden flex gap-0.5 ml-6">
-                <button onclick="switchTab('Dash')" id="btnAbaDash" class="tab-active px-5 py-2 font-bold text-[11px] uppercase">Dashboard</button>
+                <button onclick="switchTab('Dash')"        id="btnAbaDash"        class="tab-active px-5 py-2 font-bold text-[11px] uppercase">Dashboard</button>
                 <button onclick="switchTab('Conferencia')" id="btnAbaConferencia" class="hover:bg-white/10 px-5 py-2 font-bold text-[11px] uppercase">Conferência</button>
-                <button onclick="switchTab('Fiscal')" id="btnAbaFiscal" class="hover:bg-white/10 px-5 py-2 font-bold text-[11px] uppercase">Fiscal</button>
-                <button onclick="switchTab('Logs')" id="btnAbaLogs" class="hidden hover:bg-white/10 px-5 py-2 font-bold text-[11px] uppercase">Logs</button>
+                <button onclick="switchTab('Fiscal')"      id="btnAbaFiscal"      class="hover:bg-white/10 px-5 py-2 font-bold text-[11px] uppercase">Fiscal</button>
+                <button onclick="switchTab('Logs')"        id="btnAbaLogs"        class="hidden hover:bg-white/10 px-5 py-2 font-bold text-[11px] uppercase">Logs</button>
             </div>
         </div>
         <div class="flex items-center gap-3">
             <span id="user-display" class="text-[10px] font-bold uppercase border-r pr-3 border-white/20"></span>
-            <!-- Botão visível apenas para admin -->
             <button id="btnGerenciarUsuarios" onclick="abrirModalUsuarios()"
-                class="hidden btn-header-icon" title="Gerenciar Usuários" aria-label="Gerenciar usuários">
-                <i class="ti ti-users" aria-hidden="true"></i>
+                class="hidden btn-header-icon" title="Gerenciar Usuários">
+                <i class="ti ti-users"></i>
             </button>
             <button id="btnLogout" class="bg-rose-800 px-3 py-1 text-[10px] font-bold uppercase">Sair</button>
         </div>
     </header>
 
-    <!-- TELA DE LOGIN -->
+    <!-- ══ LOGIN ════════════════════════════════════════════ -->
     <div id="auth-screen" class="fixed inset-0 bg-slate-200 flex items-center justify-center z-[300]">
         <div class="winthor-card p-10 w-96 space-y-6 text-center">
             <h1 class="text-2xl font-black text-blue-900 uppercase">Login</h1>
-            <input type="email" id="login-email" placeholder="E-mail" class="w-full">
-            <input type="password" id="login-pass" placeholder="Senha" class="w-full">
+            <input type="email"    id="login-email" placeholder="E-mail" class="w-full">
+            <input type="password" id="login-pass"  placeholder="Senha"  class="w-full">
             <button id="btnLogin" class="w-full btn-primary-win py-3 font-black uppercase text-xs">Entrar</button>
         </div>
     </div>
 
+    <!-- ══ CONTEÚDO PRINCIPAL ══════════════════════════════ -->
     <main id="app-content" class="hidden p-4 space-y-4">
 
         <!-- DASHBOARD -->
@@ -117,7 +70,8 @@
             <div id="box-import-xml" class="hidden winthor-card p-4 flex justify-between items-center bg-slate-50 border-dashed border-2">
                 <span class="font-bold uppercase text-xs">Importar Nova NF-e (.xml)</span>
                 <input type="file" id="xml-input" accept=".xml" class="hidden">
-                <button onclick="document.getElementById('xml-input').click()" class="btn-primary-win px-6 py-2 uppercase font-bold text-xs">Processar Arquivo</button>
+                <button onclick="document.getElementById('xml-input').click()"
+                    class="btn-primary-win px-6 py-2 uppercase font-bold text-xs">Processar Arquivo</button>
             </div>
             <div id="list-conferencia" class="space-y-4"></div>
         </section>
@@ -146,10 +100,11 @@
             <div class="winthor-table-header bg-slate-800">Monitor de Sistema</div>
             <div id="list-logs" class="bg-[#0f172a] text-emerald-400 font-mono text-[11px] p-5 h-[500px] overflow-y-auto"></div>
         </section>
+
     </main>
 
-    <!-- MODAL CONFERÊNCIA DE ITEM -->
-    <div id="modal-conferencia" class="fixed inset-0 bg-black/60 z-[400] hidden flex items-center justify-center p-4">
+    <!-- ══ MODAL CONFERÊNCIA ════════════════════════════════ -->
+    <div id="modal-conferencia" class="hidden fixed inset-0 bg-black/60 z-[400] flex items-center justify-center p-4">
         <div class="winthor-card w-full max-w-sm p-0 overflow-hidden">
             <div class="winthor-table-header p-3">Conferência de Item</div>
             <div class="p-6 space-y-5">
@@ -166,452 +121,60 @@
                 </div>
                 <div class="flex gap-2 pt-4 border-t">
                     <button onclick="fecharModal()" class="flex-1 btn-winthor py-2">Sair</button>
-                    <button id="btnConfirmar" class="flex-1 btn-primary-win py-2 font-black">GRAVAR</button>
+                    <button id="btnConfirmar"       class="flex-1 btn-primary-win py-2 font-black">GRAVAR</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ══════════════════════════════════════════════════
-         MODAL GERENCIAR USUÁRIOS (ADMIN ONLY)
-    ══════════════════════════════════════════════════ -->
+    <!-- ══ MODAL USUÁRIOS ══════════════════════════════════ -->
     <div id="modal-usuarios" role="dialog" aria-modal="true" aria-labelledby="mu-titulo">
         <div class="mu-box">
             <div class="mu-header">
-                <span id="mu-titulo"><i class="ti ti-users" aria-hidden="true" style="margin-right:6px;vertical-align:-2px"></i>Gerenciar Usuários</span>
-                <button class="mu-close" onclick="fecharModalUsuarios()" aria-label="Fechar">✕</button>
+                <span id="mu-titulo">
+                    <i class="ti ti-users" style="margin-right:6px;vertical-align:-2px"></i>Gerenciar Usuários
+                </span>
+                <button class="mu-close" onclick="fecharModalUsuarios()">✕</button>
             </div>
             <div class="mu-body">
-
-                <!-- Abas internas -->
                 <div class="mu-tabs">
-                    <button class="mu-tab active" id="mu-tab-novo" onclick="muSwitchTab('novo')">Novo Usuário</button>
-                    <button class="mu-tab" id="mu-tab-lista" onclick="muSwitchTab('lista')">Cadastrados</button>
+                    <button class="mu-tab active" id="mu-tab-novo"   onclick="muSwitchTab('novo')">Novo Usuário</button>
+                    <button class="mu-tab"        id="mu-tab-lista"  onclick="muSwitchTab('lista')">Cadastrados</button>
                 </div>
 
-                <!-- ── PAINEL: NOVO USUÁRIO ── -->
+                <!-- Painel: Novo Usuário -->
                 <div id="mu-pane-novo">
                     <div id="mu-alert" class="mu-alert"></div>
-
                     <label class="mu-label">E-mail</label>
-                    <input type="email" id="mu-email" class="mu-input" placeholder="usuario@empresa.com">
-
+                    <input type="email"    id="mu-email" class="mu-input" placeholder="usuario@empresa.com">
                     <label class="mu-label">Senha</label>
                     <input type="password" id="mu-senha" class="mu-input" placeholder="Mínimo 6 caracteres">
-
                     <label class="mu-label" style="margin-top:14px">Perfil de Acesso</label>
                     <div class="role-grid">
-                        <div class="role-opt selected" id="role-opt-user" onclick="muSelectRole('user')">
-                            <i class="ti ti-user" aria-hidden="true"></i>
-                            <span class="rl">Conferente</span>
+                        <div class="role-opt selected" id="role-opt-user"  onclick="muSelectRole('user')">
+                            <i class="ti ti-user"></i><span class="rl">Conferente</span>
                         </div>
-                        <div class="role-opt" id="role-opt-admin" onclick="muSelectRole('admin')">
-                            <i class="ti ti-shield-check" aria-hidden="true"></i>
-                            <span class="rl">Admin</span>
+                        <div class="role-opt"          id="role-opt-admin" onclick="muSelectRole('admin')">
+                            <i class="ti ti-shield-check"></i><span class="rl">Admin</span>
                         </div>
                     </div>
-
                     <button id="mu-btn-salvar" onclick="muCadastrar()"
                         class="w-full btn-primary-win py-2 font-black text-xs uppercase mt-4">
                         Cadastrar Usuário
                     </button>
                 </div>
 
-                <!-- ── PAINEL: LISTA DE USUÁRIOS ── -->
+                <!-- Painel: Lista -->
                 <div id="mu-pane-lista" style="display:none">
                     <div id="mu-lista-container"></div>
                     <p id="list-usuarios-empty" class="hidden">Nenhum usuário encontrado.</p>
                 </div>
-
             </div>
         </div>
     </div>
-    <!-- ── FIM MODAL USUÁRIOS ── -->
 
-    <script type="module">
-        import { initializeApp }                        from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword,
-                 onAuthStateChanged, signOut,
-                 createUserWithEmailAndPassword }       from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, doc,
-                 getDoc, getDocs, addDoc, setDoc,
-                 updateDoc, deleteDoc, onSnapshot,
-                 query, orderBy, serverTimestamp }      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <!-- ══ SCRIPTS (ES Modules) ════════════════════════════ -->
+    <script type="module" src="js/app.js"></script>
 
-        // ── FIREBASE CONFIG ──────────────────────────────
-        const firebaseConfig = {
-            apiKey:            "AIzaSyBwR777V1L9W59tehN5JCOsWalep576u0U",
-            authDomain:        "stockflow-40cec.firebaseapp.com",
-            projectId:         "stockflow-40cec",
-            storageBucket:     "stockflow-40cec.firebasestorage.app",
-            messagingSenderId: "445150768122",
-            appId:             "1:445150768122:web:e1ddd8b02c994c461c9243"
-        };
-
-        const app  = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db   = getFirestore(app);
-        let currentUserRole = "user";
-        let currentUserEmail = "";
-
-        // ── MONITORES (rodam sempre após login) ──────────
-        const monitorarRecebimentos = () => {
-            onSnapshot(query(collection(db, "recebimentos"), orderBy("data", "desc")), (snap) => {
-                const listConf  = document.getElementById('list-conferencia');
-                const listFiscal = document.getElementById('list-fiscal-body');
-                listConf.innerHTML = ""; listFiscal.innerHTML = "";
-                let pend = 0, div = 0;
-
-                snap.forEach(d => {
-                    const i = d.data(); const id = d.id;
-
-                    if (i.status !== "SUCESSO" && i.status !== "BLOQUEADO_AUDITORIA" && i.tentativas < 2) {
-                        const emRecontagem = i.tentativas === 1;
-                        listConf.innerHTML += `
-                        <div class="winthor-card overflow-hidden ${emRecontagem ? 'border-l-4 border-l-amber-500' : ''}">
-                            <div class="winthor-table-header ${emRecontagem ? 'bg-amber-700' : 'bg-slate-600'} flex justify-between">
-                                <span>NF: ${i.nf} | ${i.fornecedor} ${emRecontagem ? '(RECONTAGEM)' : ''}</span>
-                                <span>LOTE: ${i.lote}</span>
-                            </div>
-                            <div class="p-3 flex justify-between items-center">
-                                <div>
-                                    <span class="font-black text-[11px] uppercase">${i.produto}</span>
-                                    ${emRecontagem ? `<span class="ml-2 bg-amber-100 text-amber-800 px-2 py-0.5 font-bold text-[9px]">ÚLT. QTD: ${i.qtdContada}</span>` : ''}
-                                </div>
-                                <button onclick="abrirModal('${id}','${i.produto}',${i.qtdEsperada},'${i.nf}','${i.fornecedor}')" class="btn-winthor">Conferir</button>
-                            </div>
-                        </div>`;
-                        pend++;
-                    }
-
-                    listFiscal.innerHTML += `<tr class="border-b bg-white">
-                        <td class="p-2 border-r font-bold">${i.lote}</td>
-                        <td class="p-2 border-r">${i.fornecedor}</td>
-                        <td class="p-2 border-r">${i.produto}</td>
-                        <td class="p-2 border-r text-center">${i.tentativas}/2</td>
-                        <td class="p-2 border-r font-bold ${i.status==='SUCESSO'?'text-emerald-600':(i.status==='BLOQUEADO_AUDITORIA'?'text-rose-700':'text-slate-500')}">${i.status}</td>
-                        <td class="p-2 text-center">
-                            <button onclick="abrirModal('${id}','${i.produto}',${i.qtdEsperada},'${i.nf}','${i.fornecedor}')"
-                                class="btn-winthor ${currentUserRole==='admin'?'':'hidden'}">AUDITAR</button>
-                        </td>
-                    </tr>`;
-                    if (i.status === "BLOQUEADO_AUDITORIA") div++;
-                });
-                document.getElementById('kpi-pendentes').innerText   = pend;
-                document.getElementById('kpi-divergencias').innerText = div;
-            });
-        };
-
-        const monitorarEstoque = () => {
-            onSnapshot(collection(db, "estoque_geral"), (snap) => {
-                const container = document.getElementById('grid-estoque-fornecedor');
-                container.innerHTML = ""; let t = 0;
-                snap.forEach(d => {
-                    const i = d.data();
-                    container.innerHTML += `<div class="winthor-card p-2 text-[10px] uppercase flex justify-between"><span>${i.produto}</span><b>${i.saldo} UN</b></div>`;
-                    t++;
-                });
-                document.getElementById('kpi-total-itens').innerText = t;
-            });
-        };
-
-        // ── AUTH STATE ───────────────────────────────────
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                const snap = await getDoc(doc(db, "usuarios", user.uid));
-                if (snap.exists()) currentUserRole = snap.data().role;
-                currentUserEmail = user.email;
-
-                document.getElementById('user-display').innerText = user.email;
-                document.getElementById('auth-screen').classList.add('hidden');
-                document.getElementById('app-content').classList.remove('hidden');
-                document.getElementById('nav-abas').classList.remove('hidden');
-                document.getElementById('box-import-xml').classList.toggle('hidden', currentUserRole !== "admin");
-                document.getElementById('btnAbaLogs').classList.toggle('hidden', currentUserRole !== "admin");
-
-                // Botão de gerenciar usuários — visível apenas para admin
-                document.getElementById('btnGerenciarUsuarios').classList.toggle('hidden', currentUserRole !== "admin");
-
-                monitorarRecebimentos();
-                monitorarEstoque();
-                if (currentUserRole === "admin") monitorarLogs();
-            } else {
-                document.getElementById('auth-screen').classList.remove('hidden');
-                document.getElementById('app-content').classList.add('hidden');
-                document.getElementById('nav-abas').classList.add('hidden');
-            }
-        });
-
-        document.getElementById('btnLogin').onclick = () =>
-            signInWithEmailAndPassword(auth,
-                document.getElementById('login-email').value,
-                document.getElementById('login-pass').value
-            ).catch(err => alert("Erro de login: " + err.message));
-
-        document.getElementById('btnLogout').onclick = () => signOut(auth);
-
-        // ── LOG ──────────────────────────────────────────
-        async function registrarLog(acao, detalhes) {
-            await addDoc(collection(db, "logs"), {
-                usuario: auth.currentUser?.email || "?",
-                acao, detalhes,
-                data: serverTimestamp()
-            });
-        }
-
-        function monitorarLogs() {
-            onSnapshot(query(collection(db, "logs"), orderBy("data", "desc")), (snap) => {
-                const list = document.getElementById('list-logs');
-                list.innerHTML = "";
-                snap.forEach(d => {
-                    const l = d.data();
-                    list.innerHTML += `<div>[${l.data?.toDate().toLocaleString() || '...'}] ${l.usuario}: ${l.acao} - ${l.detalhes}</div>`;
-                });
-            });
-        }
-
-        // ── ABAS PRINCIPAIS ──────────────────────────────
-        window.switchTab = (tab) => {
-            ['Dash','Conferencia','Fiscal','Logs'].forEach(t => {
-                document.getElementById(`aba-${t.toLowerCase()}`)?.classList.add('hidden');
-                document.getElementById(`btnAba${t}`)?.classList.remove('tab-active');
-            });
-            document.getElementById(`aba-${tab.toLowerCase()}`).classList.remove('hidden');
-            document.getElementById(`btnAba${tab}`).classList.add('tab-active');
-        };
-
-        // ── IMPORTAÇÃO XML ───────────────────────────────
-        document.getElementById('xml-input').onchange = (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = async (ev) => {
-                const parser = new DOMParser();
-                const xml   = parser.parseFromString(ev.target.result, "text/xml");
-                const nNF   = xml.getElementsByTagName("nNF")[0]?.textContent;
-                const forn  = xml.getElementsByTagName("xNome")[0]?.textContent.toUpperCase();
-                const lote  = "L" + Date.now().toString().slice(-5);
-                const itens = xml.getElementsByTagName("det");
-                const promises = [];
-                for (let i = 0; i < itens.length; i++) {
-                    promises.push(addDoc(collection(db, "recebimentos"), {
-                        lote, nf: nNF, fornecedor: forn,
-                        produto:      (itens[i].getElementsByTagName("xProd")[0]?.textContent).toUpperCase(),
-                        qtdEsperada:  parseFloat(itens[i].getElementsByTagName("qCom")[0]?.textContent),
-                        status: "PENDENTE", data: serverTimestamp(), qtdContada: 0, tentativas: 0
-                    }));
-                }
-                try {
-                    await Promise.all(promises);
-                    await registrarLog("IMPORT_XML", `NF ${nNF} enviada para conferência.`);
-                    e.target.value = "";
-                    switchTab('Conferencia');
-                    alert("Nota importada! Os produtos já estão na lista.");
-                } catch (err) { alert("Erro ao importar: " + err.message); }
-            };
-            reader.readAsText(file);
-        };
-
-        // ── MODAL CONFERÊNCIA ────────────────────────────
-        let activeItem = null;
-        window.abrirModal = async (id, prod, esp, nf, forn) => {
-            const snap  = await getDoc(doc(db, "recebimentos", id));
-            activeItem  = { id, prod, esp, nf, forn, ...snap.data() };
-            document.getElementById('modal-prod-nome').innerText = prod;
-            document.getElementById('input-qtd').value     = "";
-            document.getElementById('input-validade').value = "";
-            document.getElementById('modal-conferencia').classList.remove('hidden');
-        };
-        window.fecharModal = () => document.getElementById('modal-conferencia').classList.add('hidden');
-
-        document.getElementById('btnConfirmar').onclick = async () => {
-            const qtd = parseFloat(document.getElementById('input-qtd').value);
-            const val = document.getElementById('input-validade').value;
-            if (isNaN(qtd) || !val) return alert("Erro: Preencha todos os campos.");
-
-            const ref          = doc(db, "recebimentos", activeItem.id);
-            const novaTentativa = (activeItem.tentativas || 0) + 1;
-
-            if (currentUserRole === "admin" || qtd === activeItem.qtdEsperada) {
-                await updateDoc(ref, { status: "SUCESSO", qtdContada: qtd, validade: val, tentativas: novaTentativa });
-                await addDoc(collection(db, "estoque_geral"), {
-                    produto: activeItem.produto, saldo: qtd,
-                    validade: val, fornecedor: activeItem.fornecedor
-                });
-                registrarLog("APROVADO", `${activeItem.produto} finalizado.`);
-                fecharModal();
-            } else {
-                if (novaTentativa >= 2) {
-                    await updateDoc(ref, { status: "BLOQUEADO_AUDITORIA", qtdContada: qtd, validade: val, tentativas: novaTentativa });
-                    alert("BLOQUEADO! O item foi enviado para auditoria.");
-                } else {
-                    await updateDoc(ref, { status: "RECONTAGEM", qtdContada: qtd, validade: val, tentativas: novaTentativa });
-                    alert("DIVERGÊNCIA! Recontagem necessária (Tentativa " + novaTentativa + "/2).");
-                }
-                registrarLog("DIVERGENCIA", `Erro: ${activeItem.produto} (${novaTentativa}ª tent.)`);
-                fecharModal();
-            }
-        };
-
-        // ════════════════════════════════════════════════
-        //  MODAL GERENCIAR USUÁRIOS
-        // ════════════════════════════════════════════════
-        let muRole = 'user';
-
-        window.abrirModalUsuarios = () => {
-            document.getElementById('modal-usuarios').classList.add('open');
-            muSwitchTab('novo');
-            muLimparAlerta();
-        };
-
-        window.fecharModalUsuarios = () => {
-            document.getElementById('modal-usuarios').classList.remove('open');
-        };
-
-        // Fecha ao clicar fora do box
-        document.getElementById('modal-usuarios').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('modal-usuarios')) fecharModalUsuarios();
-        });
-
-        window.muSwitchTab = (tab) => {
-            document.getElementById('mu-pane-novo').style.display   = tab === 'novo'  ? 'block' : 'none';
-            document.getElementById('mu-pane-lista').style.display  = tab === 'lista' ? 'block' : 'none';
-            document.getElementById('mu-tab-novo').classList.toggle('active',  tab === 'novo');
-            document.getElementById('mu-tab-lista').classList.toggle('active', tab === 'lista');
-            if (tab === 'lista') muCarregarLista();
-        };
-
-        window.muSelectRole = (role) => {
-            muRole = role;
-            document.getElementById('role-opt-user').classList.toggle('selected',  role === 'user');
-            document.getElementById('role-opt-admin').classList.toggle('selected', role === 'admin');
-        };
-
-        function muShowAlerta(msg, tipo) {
-            const el = document.getElementById('mu-alert');
-            el.textContent  = msg;
-            el.className    = 'mu-alert ' + tipo;
-            el.style.display = 'block';
-            setTimeout(() => { el.style.display = 'none'; }, 4500);
-        }
-        function muLimparAlerta() {
-            const el = document.getElementById('mu-alert');
-            el.style.display = 'none';
-        }
-
-        // Cria usuário via REST (evita deslogar o admin atual)
-        window.muCadastrar = async () => {
-            const email = document.getElementById('mu-email').value.trim();
-            const senha = document.getElementById('mu-senha').value;
-
-            if (!email || !senha)       return muShowAlerta('Preencha e-mail e senha.', 'error');
-            if (senha.length < 6)       return muShowAlerta('Senha deve ter mínimo 6 caracteres.', 'error');
-
-            const btn = document.getElementById('mu-btn-salvar');
-            btn.disabled    = true;
-            btn.textContent = 'Cadastrando...';
-
-            try {
-                // 1. Cria na Firebase Auth via REST Identity Toolkit
-                const res = await fetch(
-                    `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${firebaseConfig.apiKey}`,
-                    {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ email, password: senha, returnSecureToken: true })
-                    }
-                );
-                const data = await res.json();
-                if (data.error) throw new Error(data.error.message);
-
-                // 2. Salva role no Firestore
-                await setDoc(doc(db, "usuarios", data.localId), {
-                    email,
-                    role: muRole,
-                    criadoPor: currentUserEmail,
-                    criadoEm: serverTimestamp()
-                });
-
-                // 3. Registra log
-                await registrarLog("CRIAR_USUARIO", `${email} (${muRole}) cadastrado.`);
-
-                // 4. Feedback
-                muShowAlerta(`Usuário ${email} criado com sucesso!`, 'success');
-                document.getElementById('mu-email').value = '';
-                document.getElementById('mu-senha').value = '';
-                muSelectRole('user');
-
-            } catch (err) {
-                const msgs = {
-                    'EMAIL_EXISTS':              'Este e-mail já está cadastrado.',
-                    'INVALID_EMAIL':             'E-mail inválido.',
-                    'WEAK_PASSWORD : Password should be at least 6 characters': 'Senha muito fraca (mín. 6 caracteres).',
-                };
-                muShowAlerta(msgs[err.message] || 'Erro: ' + err.message, 'error');
-            } finally {
-                btn.disabled    = false;
-                btn.textContent = 'Cadastrar Usuário';
-            }
-        };
-
-        // Carrega lista de usuários do Firestore
-        async function muCarregarLista() {
-            const container = document.getElementById('mu-lista-container');
-            const emptyMsg  = document.getElementById('list-usuarios-empty');
-            container.innerHTML = '<p style="font-size:11px;color:#94a3b8;text-align:center;padding:12px">Carregando...</p>';
-
-            try {
-                const snap = await getDocs(collection(db, "usuarios"));
-                container.innerHTML = '';
-
-                if (snap.empty) {
-                    emptyMsg.classList.remove('hidden');
-                    return;
-                }
-                emptyMsg.classList.add('hidden');
-
-                snap.forEach(d => {
-                    const u      = d.data();
-                    const uid    = d.id;
-                    const initials = (u.email || '??').substring(0, 2).toUpperCase();
-                    const badgeClass = u.role === 'admin' ? 'badge-admin' : 'badge-user';
-                    const badgeLabel = u.role === 'admin' ? 'Admin' : 'Conferente';
-                    const isSelf = u.email === currentUserEmail;
-
-                    const item = document.createElement('div');
-                    item.className = 'user-item';
-                    item.innerHTML = `
-                        <div class="user-avatar">${initials}</div>
-                        <div class="user-info">
-                            <div class="user-email">${u.email}</div>
-                            <span class="role-badge ${badgeClass}">${badgeLabel}</span>
-                        </div>
-                        <button class="btn-del" ${isSelf ? 'disabled title="Você mesmo"' : `onclick="muRemoverUsuario('${uid}', this)"`}>
-                            ${isSelf ? 'Você' : 'Remover'}
-                        </button>`;
-                    container.appendChild(item);
-                });
-            } catch (err) {
-                container.innerHTML = `<p style="font-size:11px;color:#dc2626;padding:8px">Erro ao carregar: ${err.message}</p>`;
-            }
-        }
-
-        window.muRemoverUsuario = async (uid, btn) => {
-            if (!confirm('Tem certeza que deseja remover este usuário?\n(O acesso ao sistema será revogado.)')) return;
-            btn.disabled    = true;
-            btn.textContent = '...';
-            try {
-                // Remove do Firestore (bloqueia acesso futuro; a conta Auth permanece mas sem role)
-                await deleteDoc(doc(db, "usuarios", uid));
-                await registrarLog("REMOVER_USUARIO", `UID ${uid} removido.`);
-                btn.closest('.user-item').remove();
-            } catch (err) {
-                alert('Erro ao remover: ' + err.message);
-                btn.disabled    = false;
-                btn.textContent = 'Remover';
-            }
-        };
-
-    </script>
 </body>
 </html>
