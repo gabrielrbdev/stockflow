@@ -13,7 +13,6 @@ import { state } from "../config/state.js";
 
 let muRole = 'user';
 
-// ── Abertura / Fechamento ────────────────────
 
 export function abrirModalUsuarios() {
     document.getElementById('modal-usuarios').classList.add('open');
@@ -25,12 +24,10 @@ export function fecharModalUsuarios() {
     document.getElementById('modal-usuarios').classList.remove('open');
 }
 
-// Fecha ao clicar fora do box
 document.getElementById('modal-usuarios').addEventListener('click', (e) => {
     if (e.target === document.getElementById('modal-usuarios')) fecharModalUsuarios();
 });
 
-// ── Abas internas ────────────────────────────
 
 export function muSwitchTab(tab) {
     document.getElementById('mu-pane-novo').style.display  = tab === 'novo'  ? 'block' : 'none';
@@ -40,7 +37,6 @@ export function muSwitchTab(tab) {
     if (tab === 'lista') _carregarLista();
 }
 
-// ── Seleção de perfil ────────────────────────
 
 export function muSelectRole(role) {
     muRole = role;
@@ -48,7 +44,6 @@ export function muSelectRole(role) {
     document.getElementById('role-opt-admin').classList.toggle('selected', role === 'admin');
 }
 
-// ── Cadastro ─────────────────────────────────
 
 export async function muCadastrar() {
     const email = document.getElementById('mu-email').value.trim();
@@ -75,7 +70,6 @@ export async function muCadastrar() {
     }
 }
 
-// ── Lista de usuários ────────────────────────
 
 async function _carregarLista() {
     const container = document.getElementById('mu-lista-container');
@@ -133,7 +127,6 @@ export async function muRemoverUsuario(uid, btn) {
     }
 }
 
-// ── Alertas ──────────────────────────────────
 
 function _showAlerta(msg, tipo) {
     const el = document.getElementById('mu-alert');
@@ -147,7 +140,6 @@ function _limparAlerta() {
     document.getElementById('mu-alert').style.display = 'none';
 }
 
-// Expõe funções chamadas via onclick no HTML
 window.abrirModalUsuarios = abrirModalUsuarios;
 window.fecharModalUsuarios = fecharModalUsuarios;
 window.muSwitchTab        = muSwitchTab;
