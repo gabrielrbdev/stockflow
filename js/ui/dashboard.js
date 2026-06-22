@@ -5,15 +5,12 @@
 import { monitorarEstoque }       from "../services/estoqueService.js";
 import { monitorarRecebimentos }  from "../services/recebimentoService.js";
 
-/**
- * Inicializa os listeners e atualiza os KPIs e grid de estoque.
- */
+
 export function iniciarDashboard() {
     _observarEstoque();
     _observarKpis();
 }
 
-// ── Privado ─────────────────────────────────
 
 function _observarEstoque() {
     const container = document.getElementById('grid-estoque-fornecedor');
