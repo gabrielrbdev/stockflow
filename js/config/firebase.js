@@ -1,17 +1,6 @@
 // =============================================================================
 // config/firebase.js — Inicialização do Firebase
 // =============================================================================
-//
-// Este arquivo é o ponto de entrada para todos os serviços do Firebase.
-// Ele inicializa o app UMA única vez e exporta as instâncias prontas para uso.
-//
-// Por que centralizar aqui?
-//   Se a chave ou o projeto mudar, basta editar ESTE arquivo.
-//   Nenhum outro arquivo precisa saber das credenciais.
-//
-// Outros arquivos importam assim:
-//   import { auth, db } from "../config/firebase.js";
-// =============================================================================
 
 import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth }         from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
