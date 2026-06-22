@@ -1,6 +1,3 @@
-/* ══════════════════════════════════════════════
-   StockFlow | Estilos Globais
-   ══════════════════════════════════════════════ */
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
@@ -9,7 +6,6 @@ body {
   font-size: 13px;
 }
 
-/* ── COMPONENTES BASE ── */
 .winthor-header {
   background: linear-gradient(to bottom, #1e3a8a, #172554);
   border-bottom: 2px solid #fbbf24;
@@ -79,9 +75,6 @@ input, select {
 .hidden { display: none !important; }
 
 
-/* ══════════════════════════════════════════════
-   MODAL – CONFERÊNCIA DE ITEM
-   ══════════════════════════════════════════════ */
 #modal-conferencia {
   position: fixed;
   inset: 0;
@@ -94,9 +87,6 @@ input, select {
 }
 
 
-/* ══════════════════════════════════════════════
-   MODAL – GERENCIAR USUÁRIOS
-   ══════════════════════════════════════════════ */
 #modal-usuarios {
   display: none;
   position: fixed;
@@ -196,7 +186,6 @@ input, select {
   border-color: #1e3a8a !important;
 }
 
-/* Grade de seleção de perfil */
 .role-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -218,7 +207,6 @@ input, select {
 .role-opt .rl { font-size: 10px; font-weight: bold; text-transform: uppercase; color: #475569; }
 .role-opt.selected .rl { color: #1e3a8a; }
 
-/* Alertas do modal */
 .mu-alert {
   padding: 8px 12px;
   font-size: 11px;
@@ -230,7 +218,6 @@ input, select {
 .mu-alert.success { background: #d1fae5; color: #065f46; border-left: 3px solid #10b981; }
 .mu-alert.error   { background: #fee2e2; color: #991b1b; border-left: 3px solid #ef4444; }
 
-/* Lista de usuários */
 .user-item {
   display: flex;
   align-items: center;
