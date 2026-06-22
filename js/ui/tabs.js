@@ -4,10 +4,7 @@
 
 const ABAS = ['Dash', 'Conferencia', 'Fiscal', 'Logs'];
 
-/**
- * Alterna a aba visível na tela principal.
- * @param {string} tab - Nome da aba (ex: "Dash")
- */
+
 export function switchTab(tab) {
     ABAS.forEach(t => {
         document.getElementById(`aba-${t.toLowerCase()}`)?.classList.add('hidden');
@@ -17,5 +14,4 @@ export function switchTab(tab) {
     document.getElementById(`btnAba${tab}`).classList.add('tab-active');
 }
 
-// Expõe para chamadas inline no HTML
 window.switchTab = switchTab;
