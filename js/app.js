@@ -1,7 +1,3 @@
-// ══════════════════════════════════════════════
-//  StockFlow | app.js — Ponto de Entrada
-//  Inicializa todos os módulos e conecta eventos
-// ══════════════════════════════════════════════
 
 import { login, logout, observeAuth }         from "./services/authService.js";
 import { monitorarLogs }                      from "./services/logService.js";
@@ -53,6 +49,5 @@ observeAuth(
     }
 );
 
-// ── Modal Conferência: botão Gravar ──────────
 
 document.getElementById('btnConfirmar').onclick = confirmarConferencia;
