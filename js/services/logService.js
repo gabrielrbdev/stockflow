@@ -10,11 +10,7 @@ import {
 import { auth } from "../config/firebase.js";
 import { db }   from "../config/firebase.js";
 
-/**
- * Registra uma ação de auditoria no Firestore.
- * @param {string} acao     - Código da ação (ex: "IMPORT_XML")
- * @param {string} detalhes - Descrição detalhada
- */
+
 export async function registrarLog(acao, detalhes) {
     await addDoc(collection(db, "logs"), {
         usuario: auth.currentUser?.email || "?",
@@ -24,10 +20,7 @@ export async function registrarLog(acao, detalhes) {
     });
 }
 
-/**
- * Inicia listener em tempo real dos logs e renderiza na tela.
- * @param {HTMLElement} container - Elemento onde os logs serão exibidos
- */
+
 export function monitorarLogs(container) {
     onSnapshot(query(collection(db, "logs"), orderBy("data", "desc")), (snap) => {
         container.innerHTML = "";
