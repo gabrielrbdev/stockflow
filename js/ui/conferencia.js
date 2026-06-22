@@ -7,10 +7,7 @@ import { monitorarRecebimentos, buscarRecebimento, gravarConferencia, importarXM
                                   from "../services/recebimentoService.js";
 import { switchTab }              from "./tabs.js";
 
-/**
- * Inicializa o listener de recebimentos e preenche as listas
- * de conferência e fiscal em tempo real.
- */
+
 export function iniciarConferencia() {
     monitorarRecebimentos((snap) => {
         const listConf   = document.getElementById('list-conferencia');
@@ -28,9 +25,7 @@ export function iniciarConferencia() {
     });
 }
 
-/**
- * Configura o input de arquivo XML para importação.
- */
+
 export function configurarImportacaoXML() {
     document.getElementById('xml-input').onchange = async (e) => {
         const file = e.target.files[0];
@@ -51,11 +46,7 @@ export function configurarImportacaoXML() {
     };
 }
 
-// ── Modal de Conferência ─────────────────────
 
-/**
- * Abre o modal de conferência para um item específico.
- */
 export async function abrirModal(id, prod, esp, nf, forn) {
     const item = await buscarRecebimento(id);
     state.activeItem = { id, prod, esp, nf, forn, ...item };
@@ -66,16 +57,12 @@ export async function abrirModal(id, prod, esp, nf, forn) {
     document.getElementById('modal-conferencia').classList.remove('hidden');
 }
 
-/**
- * Fecha o modal de conferência.
- */
+
 export function fecharModal() {
     document.getElementById('modal-conferencia').classList.add('hidden');
 }
 
-/**
- * Grava o resultado da conferência ao clicar em "Gravar".
- */
+
 export async function confirmarConferencia() {
     const qtd = parseFloat(document.getElementById('input-qtd').value);
     const val = document.getElementById('input-validade').value;
@@ -95,11 +82,9 @@ export async function confirmarConferencia() {
     }
 }
 
-// Expõe funções chamadas via onclick no HTML
 window.abrirModal  = abrirModal;
 window.fecharModal = fecharModal;
 
-// ── Renderização privada ─────────────────────
 
 function _renderItemConferencia(container, i, id) {
     if (i.status === "SUCESSO" || i.status === "BLOQUEADO_AUDITORIA" || i.tentativas >= 2) return;
