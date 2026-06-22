@@ -1,11 +1,23 @@
-// ══════════════════════════════════════════════
-//  StockFlow | Configuração Firebase
-// ══════════════════════════════════════════════
+// =============================================================================
+// config/firebase.js — Inicialização do Firebase
+// =============================================================================
+//
+// Este arquivo é o ponto de entrada para todos os serviços do Firebase.
+// Ele inicializa o app UMA única vez e exporta as instâncias prontas para uso.
+//
+// Por que centralizar aqui?
+//   Se a chave ou o projeto mudar, basta editar ESTE arquivo.
+//   Nenhum outro arquivo precisa saber das credenciais.
+//
+// Outros arquivos importam assim:
+//   import { auth, db } from "../config/firebase.js";
+// =============================================================================
 
 import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth }         from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore }    from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+// Credenciais do projeto no Firebase Console
 const firebaseConfig = {
     apiKey:            "AIzaSyBwR777V1L9W59tehN5JCOsWalep576u0U",
     authDomain:        "stockflow-40cec.firebaseapp.com",
@@ -15,7 +27,14 @@ const firebaseConfig = {
     appId:             "1:445150768122:web:e1ddd8b02c994c461c9243"
 };
 
-const app  = initializeApp(firebaseConfig);
+// Inicializa o app do Firebase com as credenciais acima
+const app = initializeApp(firebaseConfig);
+
+// Exporta as instâncias de autenticação e banco de dados
+// para serem reutilizadas em qualquer service sem reinicializar
 export const auth = getAuth(app);
 export const db   = getFirestore(app);
+
+// Exportamos o config também para o usuarioService,
+// que precisa da apiKey para criar usuários via REST
 export { firebaseConfig };
