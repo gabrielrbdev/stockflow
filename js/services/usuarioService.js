@@ -10,13 +10,7 @@ import { db, firebaseConfig } from "../config/firebase.js";
 import { state }              from "../config/state.js";
 import { registrarLog }       from "./logService.js";
 
-/**
- * Cria um novo usuário via REST (Identity Toolkit) e salva o papel no Firestore.
- * Evita deslogar o admin atual ao usar a SDK Client.
- * @param {string} email
- * @param {string} senha
- * @param {string} role - "user" | "admin"
- */
+
 export async function cadastrarUsuario(email, senha, role) {
     const res = await fetch(
         `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${firebaseConfig.apiKey}`,
@@ -39,10 +33,7 @@ export async function cadastrarUsuario(email, senha, role) {
     await registrarLog("CRIAR_USUARIO", `${email} (${role}) cadastrado.`);
 }
 
-/**
- * Lista todos os usuários cadastrados no Firestore.
- * @returns {Promise<Array<{uid, email, role}>>}
- */
+
 export async function listarUsuarios() {
     const snap = await getDocs(collection(db, "usuarios"));
     const lista = [];
@@ -50,16 +41,12 @@ export async function listarUsuarios() {
     return lista;
 }
 
-/**
- * Remove um usuário do Firestore (revoga o acesso ao sistema).
- * @param {string} uid
- */
+
 export async function removerUsuario(uid) {
     await deleteDoc(doc(db, "usuarios", uid));
     await registrarLog("REMOVER_USUARIO", `UID ${uid} removido.`);
 }
 
-/** Mapeamento de códigos de erro da API do Firebase para mensagens amigáveis */
 export const ERROS_AUTH = {
     'EMAIL_EXISTS':   'Este e-mail já está cadastrado.',
     'INVALID_EMAIL':  'E-mail inválido.',
