@@ -1,6 +1,3 @@
-// ══════════════════════════════════════════════
-//  StockFlow | Serviço de Recebimentos
-// ══════════════════════════════════════════════
 
 import {
     collection, doc, addDoc, getDoc, updateDoc,
