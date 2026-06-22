@@ -11,10 +11,7 @@ import { db }            from "../config/firebase.js";
 import { state }         from "../config/state.js";
 import { registrarLog }  from "./logService.js";
 
-/**
- * Inicia listener em tempo real nos recebimentos.
- * @param {Function} callback - Recebe o snapshot do Firestore
- */
+
 export function monitorarRecebimentos(callback) {
     return onSnapshot(
         query(collection(db, "recebimentos"), orderBy("data", "desc")),
@@ -22,10 +19,7 @@ export function monitorarRecebimentos(callback) {
     );
 }
 
-/**
- * Importa os itens de um XML de NF-e para o Firestore.
- * @param {string} xmlText - Conteúdo textual do arquivo XML
- */
+
 export async function importarXML(xmlText) {
     const parser = new DOMParser();
     const xml    = parser.parseFromString(xmlText, "text/xml");
@@ -54,22 +48,13 @@ export async function importarXML(xmlText) {
     await registrarLog("IMPORT_XML", `NF ${nNF} enviada para conferência.`);
 }
 
-/**
- * Busca os dados de um recebimento pelo ID.
- * @param {string} id
- * @returns {Promise<Object>}
- */
+
 export async function buscarRecebimento(id) {
     const snap = await getDoc(doc(db, "recebimentos", id));
     return { id, ...snap.data() };
 }
 
-/**
- * Grava o resultado da conferência de um item.
- * @param {Object} item      - Dados do item ativo (activeItem)
- * @param {number} qtd       - Quantidade contada
- * @param {string} validade  - Data de validade
- */
+
 export async function gravarConferencia(item, qtd, validade) {
     const ref          = doc(db, "recebimentos", item.id);
     const novaTentativa = (item.tentativas || 0) + 1;
