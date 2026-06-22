@@ -1,7 +1,3 @@
-// ══════════════════════════════════════════════
-//  StockFlow | app.js — Ponto de Entrada
-//  Inicializa todos os módulos e conecta eventos
-// ══════════════════════════════════════════════
 
 import { login, logout, observeAuth }         from "./services/authService.js";
 import { monitorarLogs }                      from "./services/logService.js";
@@ -11,8 +7,6 @@ import { iniciarConferencia, configurarImportacaoXML, confirmarConferencia }
 import "./ui/tabs.js";
 import "./ui/modalUsuarios.js";
 
-// ── Auth: Login / Logout ─────────────────────
-
 document.getElementById('btnLogin').onclick = () =>
     login(
         document.getElementById('login-email').value,
@@ -21,7 +15,6 @@ document.getElementById('btnLogin').onclick = () =>
 
 document.getElementById('btnLogout').onclick = () => logout();
 
-// ── Auth: Observer ───────────────────────────
 
 observeAuth(
     // Usuário autenticado
@@ -31,7 +24,6 @@ observeAuth(
         document.getElementById('app-content').classList.remove('hidden');
         document.getElementById('nav-abas').classList.remove('hidden');
 
-        // Funcionalidades exclusivas de admin
         document.getElementById('box-import-xml').classList.toggle('hidden', role !== "admin");
         document.getElementById('btnAbaLogs').classList.toggle('hidden', role !== "admin");
         document.getElementById('btnGerenciarUsuarios').classList.toggle('hidden', role !== "admin");
@@ -45,7 +37,6 @@ observeAuth(
             monitorarLogs(document.getElementById('list-logs'));
         }
     },
-    // Usuário deslogado
     () => {
         document.getElementById('auth-screen').classList.remove('hidden');
         document.getElementById('app-content').classList.add('hidden');
@@ -53,6 +44,5 @@ observeAuth(
     }
 );
 
-// ── Modal Conferência: botão Gravar ──────────
 
 document.getElementById('btnConfirmar').onclick = confirmarConferencia;
